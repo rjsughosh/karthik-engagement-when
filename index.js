@@ -77,14 +77,25 @@ window.onload = function (event) {
   currentCity = getCityByIP();
   
 
-  const currentDateTime = new Date();
-  console.log(currentDateTime)
+  
 
+  var x = setInterval(function() {
 
-  const targetDateTimeUTC = new Date(Date.UTC(2023, 4, 8, 4, 30, 0));
-  console.log("targetDateTimeUTC", targetDateTimeUTC)
+    const currentDateTime = new Date();
+    console.log(currentDateTime)
+  
+  
+    const targetDateTimeUTC = new Date(Date.UTC(2023, 4, 8, 4, 30, 0));
+    console.log("targetDateTimeUTC", targetDateTimeUTC)
+  
+    findDifferenceDate(currentDateTime,targetDateTimeUTC);
 
-  findDifferenceDate(currentDateTime,targetDateTimeUTC);
+    // If the countdown is over, display "EXPIRED"
+    if (distance < 0) {
+      clearInterval(x);
+      document.getElementById("congrats").innerHTML = "CONGRATULATIONS!!";
+    }
+  }, 1000);
 
   
 
@@ -95,11 +106,13 @@ function findDifferenceDate(date1,date2){
   var diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24)); // difference in days
   var diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); // difference in hours
   var diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60)); // difference in minutes
+  var diffSeconds = Math.floor((diffMs % (1000 * 60)) / 1000);
 
-  console.log(diffDays + " days, " + diffHours + " hours, and " + diffMins + " minutes"); // Output: "2 days, 2 hours, and 30 minutes"
+  console.log(diffDays + " days, " + diffHours + " hours, and " + diffMins + " minutes" + diffSeconds + " seconds"); // Output: "2 days, 2 hours, and 30 minutes"
   document.getElementById("days").innerHTML = diffDays;
   document.getElementById("hours").innerHTML = diffHours;
   document.getElementById("minutes").innerHTML = diffMins;
+  document.getElementById("seconds").innerHTML = diffSeconds;
 }
 
 function getDateTimeinSpecifiedTimezone(timezone, date){
